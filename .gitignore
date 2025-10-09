@@ -1,0 +1,13 @@
+.idea/
+.DS_Store
+zenml_env*/
+data/processed
+data/raw
+data/test/
+data/train/
+*.pyc
+*__pycache__*
+mlruns/
+hyperband_tuner*/
+.streamlit/secrets.toml
+zenml_stack_recipes/
