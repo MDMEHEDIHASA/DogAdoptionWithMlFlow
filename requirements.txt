@@ -1,0 +1,21 @@
+numpy
+pandas
+zenml
+mlflow
+pytest
+Pillow
+tensorflow
+mlflow
+scikit-learn
+torchvision
+deepchecks
+s3fs
+datetime
+
+# Visualization / App
+streamlit
+matplotlib
+
+# Utilities
+pyyaml
+joblib
