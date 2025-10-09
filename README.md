@@ -3,9 +3,6 @@
 
 
 
-
-
-
 mlops_project/
 │
 ├── data/
