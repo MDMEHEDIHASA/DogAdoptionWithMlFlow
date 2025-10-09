@@ -1,5 +1,11 @@
 # Dog Adoption ML Project
 ## An MLOps Project for the [ZenML Month of MLOps Competition]
+
+
+
+
+
+
 mlops_project/
 │
 ├── data/
