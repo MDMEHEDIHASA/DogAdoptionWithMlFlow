@@ -4,6 +4,7 @@ import tarfile
 import shutil
 import random
 import logging
+import yaml
 
 from zenml import step
 
@@ -11,14 +12,18 @@ from zenml import step
 @step
 
 def data_divider(
-    data_path:str = "data/raw/Images.zip",
-    output_dir:str = "data/processed"
+    config_path: str = "steps/config.yaml"
 ):
     """
     Extracts images from a zip/tar file, cleans folder names,
     and splits dataset into train and validation sets.
     """
-    train_split = 0.8
+    with open('steps/config.yaml', 'r') as file:
+        configs = yaml.safe_load(file)
+    
+    data_path = configs['data_path']
+    output_dir = configs['output_dir']
+    train_split = configs.get('val_split', 0.2)
     extract_dir = os.path.join(output_dir, "extracted")
     os.makedirs(extract_dir, exist_ok=True)
 
