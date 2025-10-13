@@ -1,3 +1,18 @@
 data_path: 'data/raw/Images.zip'
 output_dir: 'data/processed'
 val_split: 0.8
+
+image_dir_train: r'..\data\processed\train'
+image_dir_test: r'..\data\processed\test'
+output_path: 'saved_model'
+
+n_images_per_dir: 1000
+
+image_dir: r'..\data\processed\Images'
+image_size: (224, 224)
+batch_size: 32
+validation_split: 0.2
+seed: 42
+
+s3_bucket: 'are-you-a-cat'
+uploads_key: 'streamlit_uploads'
