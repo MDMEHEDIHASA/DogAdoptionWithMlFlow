@@ -68,8 +68,8 @@ def load_data(config: Dict, format_labels: bool = True) -> Tuple:
         tuple: (train_ds, val_ds, class_names, num_classes)
     """
     # Extract parameters from config
-    image_dir = config.get('image_dir') 
-    img_size = tuple(config.get('image_size'), (224,224))
+    image_dir = os.path.abspath(config.get('image_dir')) 
+    img_size = tuple(config.get('image_size', (224,224)))
     batch_size = config.get('batch_size')
     validation_split = config.get('validation_split')
     seed = config.get('seed')
