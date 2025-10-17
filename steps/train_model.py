@@ -1,18 +1,19 @@
 import yaml
 import logging
 import tensorflow as tf
-from zenml.steps import step, Output
+from zenml.steps import step
+from typing import Annotated, Tuple
 from zenml.integrations.tensorflow.materializers import KerasMaterializer
 import mlflow
 
 from model.dog_breed_classifier import DogBreedClassifier
-from util import load_config, load_data
+from steps.util import load_config, load_data
 
 logging.basicConfig(level=logging.DEBUG)
 
 @step(output_materializers=KerasMaterializer,
       experiment_tracker="mlflow_tracker")
-def train_model(config_path: str = 'config.yaml') -> Output(model=tf.keras.Model): # type: ignore
+def train_model(config_path: str = 'steps/config.yaml') -> Annotated[tf.keras.Model, "model"]: # type: ignore
     """
     Modern training pipeline using tf.data.Dataset and transfer learning.
     
@@ -68,7 +69,7 @@ def train_model(config_path: str = 'config.yaml') -> Output(model=tf.keras.Model
 # Legacy version for backward compatibility
 @step(output_materializers=KerasMaterializer,
       experiment_tracker="mlflow_tracker")
-def train_model_legacy(X_train, y_train, config_path: str = 'config.yaml') -> Output(model=tf.keras.Model): #type: ignore
+def train_model_legacy(X_train, y_train, config_path: str = 'config.yaml') -> Annotated[tf.keras.Model, "model"]: #type: ignore
     """
     Legacy training pipeline using numpy arrays.
     
@@ -103,7 +104,7 @@ def train_model_legacy(X_train, y_train, config_path: str = 'config.yaml') -> Ou
 
 
 # Standalone training script (without ZenML)
-def train_standalone(config_path: str = 'config.yaml'):
+def train_standalone(config_path: str = 'steps/config.yaml'):
     """
     Standalone training function without ZenML dependencies.
     Use this for simple training without pipeline orchestration.
