@@ -2,6 +2,7 @@ import logging
 import datetime
 import tensorflow as tf
 from tensorflow.keras import layers, models
+from tensorflow.keras.layers import Input
 from tensorflow.keras.applications import ResNet50
 from tensorflow.keras.optimizers import Adam
 
@@ -68,7 +69,7 @@ class DogBreedClassifier:
         logging.info(f"Base model loaded. Trainable: {base_model.trainable}")
         
         #Build model
-        inputs = layers.input(shape=img_size + (3,))
+        inputs = Input(shape=img_size + (3,))
 
         #optional data augmentation
         if use_augmentation:
