@@ -8,8 +8,9 @@ import mlflow
 import numpy as np
 import tensorflow as tf
 
-from zenml.steps import step, Output
-from util import load_config, load_data
+from zenml.steps import step
+from typing import Annotated, Tuple
+from steps.util import load_config, load_data
 from model.evaluator import DogBreedEvaluator
 
 logging.basicConfig(level=logging.INFO)
@@ -17,14 +18,14 @@ logging.basicConfig(level=logging.INFO)
 
 @step(experiment_tracker="mlflow_tracker")
 def evaluate_model(
-    config_path: str = 'config.yaml',
+    config_path: str = 'steps/config.yaml',
     model_path: str = None
-) -> Output(
-    accuracy=float,
-    precision=float,
-    recall=float,
-    f1=float
-):  # type: ignore
+) -> Tuple[
+    Annotated[float, "accuracy"],
+    Annotated[float, "precision"],
+    Annotated[float, "recall"],
+    Annotated[float, "f1"]
+]:  # type: ignore
     """
     Evaluate trained model on validation/test dataset.
     
@@ -108,12 +109,12 @@ def evaluate_model(
 def evaluate_model_with_arrays(
     config_path: str = 'config.yaml',
     model_path: str = None
-) -> Output(
-    accuracy=float,
-    precision=float,
-    recall=float,
-    f1=float
-):  # type: ignore
+) -> tuple[
+    Annotated[float, "accuracy"],
+    Annotated[float, "precision"],
+    Annotated[float, "recall"],
+    Annotated[float, "f1"]
+]:  # type: ignore
     """
     Evaluate trained model using numpy arrays (legacy mode).
     
