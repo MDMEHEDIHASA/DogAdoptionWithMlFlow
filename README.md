@@ -210,3 +210,19 @@ python run data_divider.py
 If you want to use the train and test split the data  you can use util file load_train_test_data function
 ```
 
+#Check the result
+```
+#First extract the class name 
+python run get_the_classname.py
+#Then run the 
+python check_result.py
+```
+#This is the result
+![my cat](_assets/result.png)
+🐕 Dog 1 Breed Predictions:
+ - German shepherd (84.19%)
+ - Norwegian elkhound (4.34%)
+ - malinois (4.27%)
+
+
+
