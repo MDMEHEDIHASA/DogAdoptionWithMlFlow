@@ -199,3 +199,13 @@ INFO:root:Results saved to evaluation_results.json
 INFO:root:Evaluation completed successfully!
 ```
 
+
+# For data collection 
+[DataSet](http://vision.stanford.edu/aditya86/ImageNetDogs/)
+#For dividing data into train and tes you can use this code 
+```
+#First go to the steps folder
+python run data_divider.py
+If you want to use the train and test split the data  you can use util file load_train_test_data function
+```
+
