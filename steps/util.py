@@ -120,6 +120,88 @@ def load_data(config: Dict, format_labels: bool = True) -> Tuple:
     return train_ds, val_ds, class_names, num_classes
 
 
+#If you want to use limited image for faster training use this funciton
+def load_data_small(config: Dict, format_labels: bool = True) -> Tuple:
+    """Loads training and validation datasets from directory using config."""
+    
+    image_dir = os.path.abspath(config.get('image_dir')) 
+    img_size = tuple(config.get('image_size', (224, 224)))
+    batch_size = config.get('batch_size', 32)
+    validation_split = config.get('validation_split', 0.2)
+    seed = config.get('seed', 42)
+    
+    # 🚀 NEW: Limit images if specified
+    n_images = config.get('n_images_per_dir', None)
+    if n_images:
+        logging.info(f'⚡ FAST MODE: Limiting to {n_images} images per breed')
+        image_dir = _create_subset(image_dir, n_images, seed)
+    
+    logging.info(f'Loading training data from {image_dir}')
+    
+    if not os.path.exists(image_dir):
+        raise ValueError(f"Image directory not found: {image_dir}")
+    
+    # Load datasets (same as before)
+    train_ds = tf.keras.utils.image_dataset_from_directory(
+        image_dir, validation_split=validation_split, subset="training",
+        seed=seed, image_size=img_size, batch_size=batch_size
+    )
+    
+    val_ds = tf.keras.utils.image_dataset_from_directory(
+        image_dir, validation_split=validation_split, subset="validation",
+        seed=seed, image_size=img_size, batch_size=batch_size
+    )
+    
+    raw_class_names = train_ds.class_names
+    
+    if format_labels:
+        class_names = format_class_names(raw_class_names)
+    else:
+        class_names = raw_class_names
+    
+    num_classes = len(class_names)
+    logging.info(f'Found {num_classes} classes')
+    
+    return train_ds, val_ds, class_names, num_classes
+
+
+# 🚀 ADD this helper function
+def _create_subset(image_dir: str, n_images: int, seed: int) -> str:
+    """Create temporary folder with limited images per breed."""
+    import tempfile
+    import shutil
+    import random
+    
+    temp_dir = tempfile.mkdtemp(prefix='subset_')
+    random.seed(seed)
+    
+    for breed in os.listdir(image_dir):
+        breed_path = os.path.join(image_dir, breed)
+        if not os.path.isdir(breed_path):
+            continue
+        
+        # Get all images
+        images = [f for f in os.listdir(breed_path)
+                 if f.lower().endswith(('.jpg', '.jpeg', '.png'))]
+        
+        if not images:
+            continue
+        
+        # Select random subset
+        selected = random.sample(images, min(n_images, len(images)))
+        
+        # Copy to temp folder
+        temp_breed = os.path.join(temp_dir, breed)
+        os.makedirs(temp_breed, exist_ok=True)
+        
+        for img in selected:
+            shutil.copy2(
+                os.path.join(breed_path, img),
+                os.path.join(temp_breed, img)
+            )
+    
+    return temp_dir
+
 # IF Pre-split data existstrain/ and test/Use load_train_test_data()
 
 def load_train_test_data(config: Dict,
