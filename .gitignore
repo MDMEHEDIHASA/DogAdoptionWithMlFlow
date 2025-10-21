@@ -5,6 +5,7 @@ data/processed
 data/raw
 data/test/
 data/train/
+saved_model
 *.pyc
 *__pycache__*
 mlruns/
