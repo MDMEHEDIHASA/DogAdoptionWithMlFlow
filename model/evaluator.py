@@ -130,16 +130,19 @@ class DogBreedEvaluator:
         Returns:
             Dict[str, float]: Dictionary of metrics
         """
+        # Get unique classes in the dataset
+        unique_classes = np.unique(np.concatenate([y_true, y_pred]))
+        
         # Basic metrics
         accuracy = accuracy_score(y_true, y_pred)
         precision = precision_score(y_true, y_pred, average='weighted', zero_division=0)
         recall = recall_score(y_true, y_pred, average='weighted', zero_division=0)
         f1 = f1_score(y_true, y_pred, average='weighted', zero_division=0)
         
-        # Per-class metrics
-        precision_per_class = precision_score(y_true, y_pred, average=None, zero_division=0)
-        recall_per_class = recall_score(y_true, y_pred, average=None, zero_division=0)
-        f1_per_class = f1_score(y_true, y_pred, average=None, zero_division=0)
+        # Per-class metrics (only for classes present in data)
+        precision_per_class = precision_score(y_true, y_pred, labels=unique_classes, average=None, zero_division=0)
+        recall_per_class = recall_score(y_true, y_pred, labels=unique_classes, average=None, zero_division=0)
+        f1_per_class = f1_score(y_true, y_pred, labels=unique_classes, average=None, zero_division=0)
         
         metrics = {
             'accuracy': float(accuracy),
@@ -148,7 +151,9 @@ class DogBreedEvaluator:
             'f1': float(f1),
             'precision_per_class': precision_per_class.tolist(),
             'recall_per_class': recall_per_class.tolist(),
-            'f1_per_class': f1_per_class.tolist()
+            'f1_per_class': f1_per_class.tolist(),
+            'num_classes_in_data': len(unique_classes),
+            'total_classes': self.num_classes
         }
         
         return metrics
@@ -164,6 +169,7 @@ class DogBreedEvaluator:
         print("\n" + "=" * 70)
         print("EVALUATION RESULTS")
         print("=" * 70)
+        print(f"Classes in test data: {metrics.get('num_classes_in_data', 'N/A')} / {metrics.get('total_classes', 'N/A')}")
         print(f"Accuracy:  {metrics['accuracy']:.4f} ({metrics['accuracy']*100:.2f}%)")
         print(f"Precision: {metrics['precision']:.4f} ({metrics['precision']*100:.2f}%)")
         print(f"Recall:    {metrics['recall']:.4f} ({metrics['recall']*100:.2f}%)")
@@ -179,13 +185,21 @@ class DogBreedEvaluator:
         y_true = self.results['y_true']
         y_pred = self.results['y_pred']
         
+        # Get unique classes present in the data
+        unique_classes = np.unique(np.concatenate([y_true, y_pred]))
+        
+        # Get labels for only the classes present in the data
+        labels_present = [self.class_names[i] for i in unique_classes]
+        
         print("\n" + "=" * 70)
         print("CLASSIFICATION REPORT")
         print("=" * 70)
+        print(f"Note: Report includes only {len(unique_classes)} out of {len(self.class_names)} total classes present in test data\n")
         print(classification_report(
             y_true, 
             y_pred, 
-            target_names=self.class_names,
+            labels=unique_classes,
+            target_names=labels_present,
             zero_division=0
         ))
         print("=" * 70)
@@ -220,14 +234,22 @@ class DogBreedEvaluator:
             logging.warning("No evaluation results available.")
             return
         
-        cm = self.get_confusion_matrix()
+        y_true = self.results['y_true']
+        y_pred = self.results['y_pred']
+        
+        # Get unique classes in data
+        unique_classes = np.unique(np.concatenate([y_true, y_pred]))
+        labels_present = [self.class_names[i] for i in unique_classes]
+        
+        # Create confusion matrix only for classes present
+        cm = confusion_matrix(y_true, y_pred, labels=unique_classes)
         
         plt.figure(figsize=figsize)
         
         # For many classes, use a subset or show without labels
-        if self.num_classes > 20:
+        if len(unique_classes) > 20:
             sns.heatmap(cm, cmap='Blues', fmt='d')
-            plt.title('Confusion Matrix')
+            plt.title(f'Confusion Matrix ({len(unique_classes)} classes)')
             plt.ylabel('True Label')
             plt.xlabel('Predicted Label')
         else:
@@ -236,10 +258,10 @@ class DogBreedEvaluator:
                 annot=True, 
                 fmt='d', 
                 cmap='Blues',
-                xticklabels=self.class_names,
-                yticklabels=self.class_names
+                xticklabels=labels_present,
+                yticklabels=labels_present
             )
-            plt.title('Confusion Matrix')
+            plt.title(f'Confusion Matrix ({len(unique_classes)} classes)')
             plt.ylabel('True Label')
             plt.xlabel('Predicted Label')
             plt.xticks(rotation=45, ha='right')
@@ -307,16 +329,20 @@ class DogBreedEvaluator:
         worst = []
         
         for i in range(len(y_true)):
-            true_label = y_true[i]
-            pred_label = y_pred[i]
+            true_label = int(y_true[i])
+            pred_label = int(y_pred[i])
             confidence = y_pred_proba[i][pred_label]
             
             is_correct = true_label == pred_label
             
+            # Safely get class names
+            true_class = self.class_names[true_label] if true_label < len(self.class_names) else f"Class_{true_label}"
+            pred_class = self.class_names[pred_label] if pred_label < len(self.class_names) else f"Class_{pred_label}"
+            
             worst.append({
                 'index': i,
-                'true_label': self.class_names[true_label],
-                'pred_label': self.class_names[pred_label],
+                'true_label': true_class,
+                'pred_label': pred_class,
                 'confidence': float(confidence),
                 'is_correct': is_correct,
                 'error_score': confidence if not is_correct else (1 - confidence)
@@ -360,11 +386,11 @@ class DogBreedEvaluator:
         save_data = {
             'metrics': self.results['metrics'],
             'class_names': self.class_names,
-            'num_samples': len(self.results['y_true'])
+            'num_samples': len(self.results['y_true']),
+            'classes_in_test_data': self.results['metrics'].get('num_classes_in_data', 0)
         }
         
         with open(filepath, 'w') as f:
             json.dump(save_data, f, indent=2)
         
         logging.info(f"Results saved to {filepath}")
-
