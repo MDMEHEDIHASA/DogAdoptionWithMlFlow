@@ -5,11 +5,9 @@ data/processed
 data/raw
 data/test/
 data/train/
-saved_model
 *.pyc
 *__pycache__*
 mlruns/
 hyperband_tuner*/
 .streamlit/secrets.toml
 zenml_stack_recipes/
-#check
