@@ -7,7 +7,7 @@ from zenml.integrations.tensorflow.materializers import KerasMaterializer
 import mlflow
 
 from model.dog_breed_classifier import DogBreedClassifier
-from steps.util import load_config, load_data
+from steps.util import load_config, load_data, load_data_small
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -32,7 +32,7 @@ def train_model(config_path: str = 'steps/config.yaml') -> Annotated[tf.keras.Mo
     
     # Load datasets
     logging.info("Loading and preparing datasets...")
-    train_ds, val_ds, class_names, num_classes = load_data(
+    train_ds, val_ds, class_names, num_classes = load_data( #use load_data_small  if you want faster result either you can use the load_data
         config=config,
         format_labels=True
     )
