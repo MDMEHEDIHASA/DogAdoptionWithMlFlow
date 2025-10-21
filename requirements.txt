@@ -11,7 +11,9 @@ torchvision
 deepchecks
 s3fs
 datetime
-
+ultralytics
+opencv-python-headless
+matplotlib
 # Visualization / App
 streamlit
 seaborn
