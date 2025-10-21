@@ -122,7 +122,7 @@ class DogBreedClassifier:
         logging.info("=" * 60)
 
         self.model.compile(
-            optimizer=Adam(learning_rate=self.config.get('learning_rate', 1e-4)),
+            optimizer=Adam(learning_rate=self.config.get('learning_rate')),
             loss="sparse_categorical_crossentropy",
             metrics=["accuracy"]
         )
@@ -235,9 +235,10 @@ class DogBreedClassifier:
         if save_format == 'h5':
             filepath = f"{output_path}/model-{timestamp}.h5"
         else:
-            filepath = f"{output_path}/model-{timestamp}"
+            filepath = f"{output_path}/model-{timestamp}.keras"
         
-        model.save(filepath, save_format=save_format)
+        #model.save(filepath, save_format=save_format)
+        model.save(filepath)
         logging.info(f"Model saved to {filepath}")
         
         return filepath
