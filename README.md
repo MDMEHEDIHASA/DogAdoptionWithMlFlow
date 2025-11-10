@@ -1,6 +1,11 @@
 # Dog Adoption ML Project
 ## An MLOps Project for the [ZenML Month of MLOps Competition]
 
+# Backend Part already included in this project and for frontend you can follow this
+
+# For Frontend Part to extract
+[Frontend](https://github.com/MDMEHEDIHASA/frontend)
+
 ## Description
 
 - **data/raw/**: Store your original dataset (Images.zip)
@@ -203,8 +208,7 @@ INFO:root:Evaluation completed successfully!
 # For data collection 
 [DataSet](http://vision.stanford.edu/aditya86/ImageNetDogs/)
 
-# For Frontend Part to extract
-[Frontend](https://github.com/MDMEHEDIHASA/frontend)
+
 
 ##For dividing data into train and tes you can use this code 
 ```
