@@ -7,7 +7,7 @@
 [Frontend](https://github.com/MDMEHEDIHASA/frontend)
 
 ## This is the frontend outlook result
-![my frontend](_assets/result2.png)
+![my frontend](_assets/result2.jpg)
 
 ## Description
 
