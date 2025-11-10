@@ -1,7 +1,7 @@
 # Dog Adoption ML Project
 ## An MLOps Project for the [ZenML Month of MLOps Competition]
 
-# Backend Part already included in this project and for frontend you can follow this
+## Backend Part already included in this project and for frontend you can follow this
 
 # For Frontend Part to extract click the link below
 [Frontend](https://github.com/MDMEHEDIHASA/frontend)
