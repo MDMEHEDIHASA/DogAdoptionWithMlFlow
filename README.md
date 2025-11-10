@@ -260,7 +260,7 @@ A professional full-stack application that combines AI-powered dog breed detecti
 
 ### Prerequisites
 
-- Node.js 20+ for frontend and 
+- Node.js 20+ for frontend and backend 18+
 - Python 3.8+ (for ML model)
 - Docker (optional, for containerized deployment)
 
