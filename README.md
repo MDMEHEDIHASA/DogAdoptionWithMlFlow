@@ -1,5 +1,4 @@
-# Dog Adoption ML Project
-## An MLOps Project for the [ZenML Month of MLOps Competition]
+# 🐕 Dog Breed Detection & Adoption Platform
 
 ## Backend Part already included in this project and for frontend you can follow this
 
