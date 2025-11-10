@@ -203,6 +203,9 @@ INFO:root:Evaluation completed successfully!
 # For data collection 
 [DataSet](http://vision.stanford.edu/aditya86/ImageNetDogs/)
 
+# For Frontend Part to extract
+[Frontend] (https://github.com/MDMEHEDIHASA/frontend)
+
 ##For dividing data into train and tes you can use this code 
 ```
 #First go to the steps folder
@@ -240,6 +243,7 @@ A professional full-stack application that combines AI-powered dog breed detecti
 - **⚡ Fast & Reliable** - Optimized for performance with proper error handling
 
 ## 🏗️ Architecture
+
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
