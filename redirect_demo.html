@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dog Breed Detection - Adoption Redirect Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .demo-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .breed-button {
+            background: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            margin: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .breed-button:hover {
+            background: #2980b9;
+        }
+        .url-display {
+            background: #ecf0f1;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: monospace;
+            word-break: break-all;
+        }
+        .api-info {
+            background: #e8f5e8;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .redirect-link {
+            color: #e74c3c;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .redirect-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐕 Dog Breed Detection with Adoption Redirects</h1>
+        
+        <div class="api-info">
+            <h3>📡 API Endpoints Available:</h3>
+            <ul>
+                <li><strong>POST /predict</strong> - Upload image, get breed + adoption centers</li>
+                <li><strong>GET /redirect/&lt;breed&gt;</strong> - Direct redirect to Petfinder with breed search</li>
+                <li><strong>GET /search-urls/&lt;breed&gt;</strong> - Get all search URLs for a breed</li>
+                <li><strong>GET /adoption-centers/&lt;breed&gt;</strong> - Get adoption centers for breed</li>
+            </ul>
+        </div>
+
+        <div class="demo-section">
+            <h3>🔗 Direct Redirect Demo</h3>
+            <p>Click any breed button to be redirected to Petfinder with that breed pre-searched:</p>
+            
+            <a href="http://localhost:5000/redirect/german%20shepherd" class="breed-button" target="_blank">
+                German Shepherd
+            </a>
+            <a href="http://localhost:5000/redirect/golden%20retriever" class="breed-button" target="_blank">
+                Golden Retriever
+            </a>
+            <a href="http://localhost:5000/redirect/labrador%20retriever" class="breed-button" target="_blank">
+                Labrador Retriever
+            </a>
+            <a href="http://localhost:5000/redirect/bulldog" class="breed-button" target="_blank">
+                Bulldog
+            </a>
+            <a href="http://localhost:5000/redirect/poodle" class="breed-button" target="_blank">
+                Poodle
+            </a>
+        </div>
+
+        <div class="demo-section">
+            <h3>🔍 Search URLs for German Shepherd</h3>
+            <p>Example of what the API returns for search URLs:</p>
+            <div class="url-display">
+                <strong>Petfinder:</strong> https://www.petfinder.com/search/dogs-for-adoption/?breed=German%20Shepherd<br>
+                <strong>Adopt-a-Pet:</strong> https://www.adoptapet.com/s/adoptable-dogs?breed=German%20Shepherd<br>
+                <strong>ASPCA:</strong> https://www.aspca.org/adopt-pet?animal=dog&breed=German%20Shepherd<br>
+                <strong>Humane Society:</strong> https://www.humanesociety.org/adopt?animal=dog&breed=German%20Shepherd
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h3>📱 Example API Response</h3>
+            <p>When you upload an image and detect a German Shepherd, you'll get:</p>
+            <pre style="background: #f8f9fa; padding: 15px; border-radius: 5px; overflow-x: auto;">
+{
+  "breed": "German Shepherd",
+  "confidence": 0.95,
+  "adoption_centers": [...],
+  "direct_search_urls": {
+    "petfinder": "https://www.petfinder.com/search/dogs-for-adoption/?breed=German%20Shepherd",
+    "adoptapet": "https://www.adoptapet.com/s/adoptable-dogs?breed=German%20Shepherd",
+    "aspca": "https://www.aspca.org/adopt-pet?animal=dog&breed=German%20Shepherd"
+  },
+  "redirect_info": {
+    "petfinder_url": "https://www.petfinder.com/search/dogs-for-adoption/?breed=German%20Shepherd",
+    "note": "Click any URL to search for this breed directly on the adoption website"
+  }
+}
+            </pre>
+        </div>
+
+        <div class="demo-section">
+            <h3>🧪 Test with Postman</h3>
+            <ol>
+                <li><strong>Upload Image:</strong> POST to <code>http://localhost:5000/predict</code></li>
+                <li><strong>Get Search URLs:</strong> GET <code>http://localhost:5000/search-urls/german%20shepherd</code></li>
+                <li><strong>Direct Redirect:</strong> GET <code>http://localhost:5000/redirect/german%20shepherd</code></li>
+            </ol>
+        </div>
+
+        <div class="demo-section">
+            <h3>🎯 How It Works</h3>
+            <ol>
+                <li>User uploads dog image to your API</li>
+                <li>API detects breed (e.g., "German Shepherd")</li>
+                <li>API returns breed info + direct search URLs</li>
+                <li>User clicks URL → redirected to Petfinder with "German Shepherd" already searched</li>
+                <li>User sees only German Shepherd dogs available for adoption!</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        // Add some interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🐕 Dog Breed Detection API Demo Loaded');
+            console.log('API Base URL: http://localhost:5000');
+        });
+    </script>
+</body>
+</html>

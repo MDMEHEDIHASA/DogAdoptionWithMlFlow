@@ -8,6 +8,9 @@ data/train/
 *.pyc
 *__pycache__*
 mlruns/
+*.env
 hyperband_tuner*/
 .streamlit/secrets.toml
 zenml_stack_recipes/
+frontend/node_modules
+backend/node_modules
