@@ -6,6 +6,9 @@
 # For Frontend Part to extract
 [Frontend](https://github.com/MDMEHEDIHASA/frontend)
 
+## This is the frontend outlook result
+![my frontend](_assets/result2.png)
+
 ## Description
 
 - **data/raw/**: Store your original dataset (Images.zip)
