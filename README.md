@@ -3,7 +3,7 @@
 
 # Backend Part already included in this project and for frontend you can follow this
 
-# For Frontend Part to extract
+# For Frontend Part to extract click the link below
 [Frontend](https://github.com/MDMEHEDIHASA/frontend)
 
 ## This is the frontend outlook result
