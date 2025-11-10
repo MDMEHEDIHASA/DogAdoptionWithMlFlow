@@ -204,7 +204,7 @@ INFO:root:Evaluation completed successfully!
 [DataSet](http://vision.stanford.edu/aditya86/ImageNetDogs/)
 
 # For Frontend Part to extract
-[Frontend] (https://github.com/MDMEHEDIHASA/frontend)
+[Frontend](https://github.com/MDMEHEDIHASA/frontend)
 
 ##For dividing data into train and tes you can use this code 
 ```
