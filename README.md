@@ -1,4 +1,214 @@
-# 🐕 Dog Breed Detection & Adoption Platform
+# 🐶 Dog Breed Detection & Recommendation System
+
+An end-to-end AI-powered application that detects dogs from uploaded images, identifies their breed using deep learning, and provides recommendations for real adoption or purchase centers. This project integrates modern MLOps practices using **MLflow** for experiment tracking and model management, and exposes predictions through a **Flask API** for easy integration with web or mobile applications.
+
+---
+
+## 📌 Project Overview
+
+This system allows users to upload an image of a dog and receive:
+- ✅ Dog detection (via YOLO object detection)
+- ✅ Dog breed classification (CNN / TensorFlow model)
+- ✅ Confidence score of prediction
+- ✅ Option to connect with real-world adoption or purchase centers
+
+The project follows an MLOps workflow inspired by production-grade pipelines such as ZenML + MLflow architectures.
+
+---
+
+## 🎯 Key Features
+
+- Automated dog detection using YOLOv8
+- Breed classification trained on Stanford Dogs Dataset
+- REST API for real-time predictions
+- MLflow integration for:
+  - Experiment tracking
+  - Model versioning
+  - Metrics logging
+- Modular pipeline design
+- Ready for deployment (Flask + optional ngrok)
+- Scalable architecture for future improvements
+
+---
+
+## 🧠 System Architecture
+
+```
+Image Upload
+     ↓
+YOLO Detection
+     ↓
+Dog Crop Extraction
+     ↓
+Breed Classification CNN
+     ↓
+MLflow Model Tracking
+     ↓
+Flask API Response
+```
+
+---
+
+## 📂 Project Structure
+
+```
+project/
+│
+├── app.py                     # Flask API server
+├── train.py                   # Model training script
+├── evaluate.py                # Model evaluation
+├── requirements.txt           # Project dependencies
+├── config.yaml                # Configuration file
+
+├── steps/
+│   ├── load_data.py
+│   ├── preprocess.py
+│   ├── train_model.py
+│   ├── evaluate_model.py
+│   └── utils.py
+
+├── models/
+│   └── saved_model/
+
+├── mlruns/                    # MLflow experiment logs
+├── data/
+│   ├── train/
+│   ├── test/
+│   └── validation/
+
+├── backend/                 # Node.js API server
+│   ├── routes/             # API routes
+│   ├── services/           # Business logic
+│   ├── middleware/         # Express middleware
+│   ├── uploads/            # Temporary file storage
+│   └── server.js          # Main server file
+├── frontend/               # React application
+│   ├── src/
+│   │   ├── components/    # React components
+│   │   ├── pages/          # Page components
+│   │   ├── services/       # API services
+│   │   └── App.js          # Main app component
+│   └── public/             # Static assets
+├── docker-compose.yml      # Docker orchestration
+
+└── README.md
+```
+
+---
+
+## 🚀 Technologies Used
+
+### Machine Learning & AI
+- TensorFlow / Keras
+- YOLOv8 (Ultralytics)
+- OpenCV
+- NumPy
+
+### MLOps & Experiment Tracking
+- MLflow
+
+### Backend & API
+- Flask
+- Flask-Ngrok (optional)
+
+### Data Handling
+- Stanford Dogs Dataset
+- Pillow (Image Processing)
+
+---
+
+## 📊 Model Workflow
+
+### 1. Data Loading
+- Images loaded from directory structure
+- Random sampling per class
+- Converted to grayscale
+- Resized & normalized
+
+### 2. Training Pipeline
+- CNN architecture built with TensorFlow
+- Loss: Binary Crossentropy / Categorical Crossentropy
+- Optimizer: Adam
+- Metrics: Accuracy, Precision, Recall
+- Logged with MLflow
+
+### 3. Evaluation
+- Model evaluated on unseen test data
+- Metrics stored in MLflow
+- Confusion Matrix & Accuracy generation
+
+---
+
+## 🔍 Important Configuration Parameters
+
+```yaml
+classification_cutoff: 0.5
+min_unsure: 0.5
+max_unsure: 0.75
+min_recall: 0.7
+min_precision: 0.6
+```
+
+| Parameter | Purpose |
+|----------|----------|
+| classification_cutoff | Threshold for class decision |
+| min_unsure | Lower bound of uncertainty |
+| max_unsure | Upper bound of uncertainty |
+| min_recall | Minimum recall required for deployment |
+| min_precision | Minimum precision required for deployment |
+
+---
+
+## 📡 API Usage
+
+### Endpoint
+```
+POST /predict
+```
+
+### Using Postman
+- Method: POST
+- URL: http://127.0.0.1:5000/predict
+- Body → form-data
+  - key: file
+  - type: File
+
+### Sample Response
+```json
+{
+  "predictions": [
+    {
+      "detected_class": "dog",
+      "breed_name": "Golden Retriever",
+      "confidence": 92.4
+    }
+  ]
+}
+```
+
+---
+
+## 📈 MLflow Integration
+
+Start MLflow UI:
+```bash
+mlflow ui
+```
+Access:
+```
+http://localhost:5001
+```
+
+Tracks:
+- Accuracy
+- Loss
+- Precision
+- Recall
+- Model versions
+
+---
+
+## ✅ How to Run Locally
 
 ## Backend Part already included in this project and for frontend you can follow this
 
@@ -308,24 +518,34 @@ docker-compose logs -f
 docker-compose down
 ```
 
+---
+
+## 🔮 Future Improvements
+
+- Integration with real pet adoption APIs
+- Streamlit web interface
+- Model explainability using SHAP
+- Automated retraining with new data
+- Cloud deployment (AWS / GCP)
+- Continuous monitoring
+
+---
+
+## ⚠️ Current Limitations
+
+- Limited dataset
+- No live monitoring dashboard
+- No real-time feedback system
+- Manual retraining required
+
+
+
+
 ## 📁 Project Structure
 
 ```
 dog-breed-detection/
-├── backend/                 # Node.js API server
-│   ├── routes/             # API routes
-│   ├── services/           # Business logic
-│   ├── middleware/         # Express middleware
-│   ├── uploads/            # Temporary file storage
-│   └── server.js          # Main server file
-├── frontend/               # React application
-│   ├── src/
-│   │   ├── components/    # React components
-│   │   ├── pages/          # Page components
-│   │   ├── services/       # API services
-│   │   └── App.js          # Main app component
-│   └── public/             # Static assets
-├── docker-compose.yml      # Docker orchestration
+
 └── README.md              # This file
 ```
 
@@ -515,5 +735,9 @@ For support and questions:
 - [ ] Adoption application tracking
 
 ---
+
+## 👨‍💻 Author
+**MD Mehedi Hasan**  
+AI Researcher & Software Engineer   
 
 **Built with ❤️ for dog lovers and their furry friends**
